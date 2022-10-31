@@ -1,2 +1,2 @@
 # webapp
-Created for ansible training
+Dummy webapp
