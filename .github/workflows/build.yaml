@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build:
+  build-image:
 
     runs-on: ubuntu-latest
 
@@ -14,3 +14,5 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: List Docker image
+      run: docker images
