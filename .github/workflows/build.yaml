@@ -43,4 +43,4 @@ jobs:
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
-        docker push "europe-west3-docker.pkg.dev/$PROJECT_ID/webapp:latest"
+        docker push "europe-west3-docker.pkg.dev/ninth-expanse-225308/webapp:latest"
