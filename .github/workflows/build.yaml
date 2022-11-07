@@ -6,8 +6,8 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-#   GCE_INSTANCE: my-githubactions-vm  # TODO: update to instance name
-#   GCE_INSTANCE_ZONE: us-central1-a   # TODO: update to instance zone
+  GCE_INSTANCE: docker-test  # TODO: update to instance name
+  GCE_INSTANCE_ZONE: us-central1-a   # TODO: update to instance zone
 
 jobs:
   setup-build-publish-deploy:
@@ -44,3 +44,9 @@ jobs:
     - name: Publish
       run: |-
         docker push "europe-west3-docker.pkg.dev/ninth-expanse-225308/webapp/image:$GITHUB_SHA"
+    # Deploy docker image to GCE
+    - name: Deploy
+      run: |-
+        gcloud compute instances update-container "$GCE_INSTANCE" \
+          --zone "$GCE_INSTANCE_ZONE" \
+          --container-image "europe-west3-docker.pkg.dev/ninth-expanse-225308/webapp/image:$GITHUB_SHA"
