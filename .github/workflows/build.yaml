@@ -38,15 +38,25 @@ jobs:
       run: |-
         docker build --tag "europe-west3-docker.pkg.dev/ninth-expanse-225308/webapp/image:$GITHUB_SHA" .
 
-    - name: List Docker image
-      run: docker images
     # Push the Docker image to Google Container Registry
     - name: Publish
       run: |-
         docker push "europe-west3-docker.pkg.dev/ninth-expanse-225308/webapp/image:$GITHUB_SHA"
-    # Deploy docker image to GCE
-    - name: Deploy
+        
+    # Upload docker compose file into GCP Bucket
+    - name: Upload compose files to Google Storage Bucket
       run: |-
-        gcloud compute instances update-container "$GCE_INSTANCE" \
-          --zone "$GCE_INSTANCE_ZONE" \
-          --container-image "europe-west3-docker.pkg.dev/ninth-expanse-225308/webapp/image:$GITHUB_SHA"
+        gcloud storage cp -r compose/* gs://deploy_manifests/docker_compose/
+    
+    # Reboot instance
+    - name: Reboot instace to restart docker compose
+      run: |-
+        gcloud compute instances stop "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE"
+        gcloud compute instances start "$GCE_INSTANCE" --zone "$GCE_INSTANCE_ZONE"
+      
+#     # Deploy docker image to GCE
+#     - name: Deploy
+#       run: |-
+#         gcloud compute instances update-container "$GCE_INSTANCE" \
+#           --zone "$GCE_INSTANCE_ZONE" \
+#           --container-image "europe-west3-docker.pkg.dev/ninth-expanse-225308/webapp/image:$GITHUB_SHA"
