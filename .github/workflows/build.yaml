@@ -6,7 +6,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
-  GCE_INSTANCE: docker-test  # TODO: update to instance name
+  GCE_INSTANCE: ubuntu-docker  # TODO: update to instance name
   GCE_INSTANCE_ZONE: us-central1-a   # TODO: update to instance zone
 
 jobs:
