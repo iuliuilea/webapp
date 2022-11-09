@@ -46,7 +46,7 @@ jobs:
     # Upload docker compose file into GCP Bucket
     - name: Upload compose files to Google Storage Bucket
       run: |-
-        gcloud storage cp -r compose/* gs://deploy_manifests/docker_compose/
+        gsutil cp -r compose gs://deploy_manifests/docker_compose/
     
     # Reboot instance
     - name: Reboot instace to restart docker compose
